@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@Table(name = "accounts")
+@Table(name = "accounts", uniqueConstraints= @UniqueConstraint(columnNames = "account_number"))
 public class Account extends BaseEntity{
 
     @Column(name = "account_number", length = 10)
@@ -33,8 +33,11 @@ public class Account extends BaseEntity{
     private Integer accountPin;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "account_currency", length = 4)
+    @Column(name = "account_currency")
     @Builder.Default
     private AccountCurrency accountCurrency = AccountCurrency.EUR;
+
+    @Column(name = "activated")
+    private boolean isActivated = false;
 
 }
