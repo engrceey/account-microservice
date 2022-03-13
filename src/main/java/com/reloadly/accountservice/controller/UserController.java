@@ -1,5 +1,6 @@
 package com.reloadly.accountservice.controller;
 
+import com.reloadly.accountservice.dto.request.UpdateUserRequestDto;
 import com.reloadly.accountservice.dto.request.UserRegistrationRequestDto;
 import com.reloadly.accountservice.dto.response.ApiResponse;
 import com.reloadly.accountservice.dto.response.UserResponseDto;
@@ -7,10 +8,7 @@ import com.reloadly.accountservice.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -33,6 +31,20 @@ public class UserController {
                 .statusMessage("success")
                 .isSuccessful(true)
                 .data(response)
+                .build()
+        );
+
+
+    }
+
+    @PutMapping(path = "{id}")
+    public ResponseEntity<ApiResponse<Boolean>> updateUser(@RequestBody @Valid UpdateUserRequestDto updateUserRequestDto,
+                                                           @PathVariable("id") long id) {
+        userService.updateUser(updateUserRequestDto, id);
+        return ResponseEntity.ok(ApiResponse.<Boolean>builder()
+                .isSuccessful(true)
+                .statusMessage("user updated successfully")
+                .data(true)
                 .build()
         );
     }

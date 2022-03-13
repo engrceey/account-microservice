@@ -6,11 +6,13 @@ import com.reloadly.accountservice.dto.response.UserResponseDto;
 import com.reloadly.accountservice.entity.Account;
 import com.reloadly.accountservice.entity.User;
 import com.reloadly.accountservice.exceptions.ResourceCreationException;
+import com.reloadly.accountservice.exceptions.ResourceNotFoundException;
 import com.reloadly.accountservice.repository.AccountRepository;
 import com.reloadly.accountservice.repository.UserRepository;
 import com.reloadly.accountservice.service.UserService;
 import com.reloadly.accountservice.utils.AccountNumberUtil;
 import com.reloadly.accountservice.utils.ModelMapperUtils;
+import org.apache.commons.lang3.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -53,10 +55,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UpdateUserRequestDto updateUserDto) {
+    public void updateUser(UpdateUserRequestDto updateUserDto, Long id) {
 
+       User user = userRepository.findById(id).<ResourceNotFoundException>orElseThrow(
+                () -> {throw new ResourceNotFoundException("user does not exist");
+                }
+        );
 
+       if (StringUtils.isNoneBlank(updateUserDto.getFirstName()))
+           user.setFirstName(updateUserDto.getFirstName());
 
+       if (StringUtils.isNoneBlank(updateUserDto.getLastName()))
+           user.setLastName(updateUserDto.getLastName());
+
+       if (StringUtils.isNoneBlank(updateUserDto.getPhoneNumber()))
+           user.setPhoneNumber(updateUserDto.getPhoneNumber());
+
+        userRepository.save(user);
     }
 
     private boolean doesAccountAlreadyExit(long accountNumber) {

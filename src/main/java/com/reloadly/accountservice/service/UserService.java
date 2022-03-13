@@ -6,5 +6,5 @@ import com.reloadly.accountservice.dto.response.UserResponseDto;
 
 public interface UserService {
         UserResponseDto createUserAccount(UserRegistrationRequestDto userRegistrationRequestDto);
-        void updateUser(UpdateUserRequestDto updateUserDto);
+        void updateUser(UpdateUserRequestDto updateUserDto, Long id);
 }
