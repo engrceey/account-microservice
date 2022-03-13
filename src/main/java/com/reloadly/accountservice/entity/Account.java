@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class Account extends BaseEntity{
 
     @Column(name = "account_number", length = 10)
-    private String accountNumber;
+    private long accountNumber;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "account_type", length = 10)

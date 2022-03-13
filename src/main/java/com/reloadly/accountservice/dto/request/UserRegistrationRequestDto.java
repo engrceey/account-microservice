@@ -2,22 +2,17 @@ package com.reloadly.accountservice.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.reloadly.accountservice.utils.PasswordMatch;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 
-@PasswordMatch(message = "validation.user.password.match")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Builder
+
+@Data
 @JsonIgnoreProperties(ignoreUnknown=true)
+@PasswordMatch(message = "validation.user.password.match")
 public class UserRegistrationRequestDto {
 
     @NotBlank(message = "firstName cannot be empty")

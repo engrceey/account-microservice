@@ -3,11 +3,9 @@ package com.reloadly.accountservice.utils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ModelMapperUtils {
@@ -30,10 +28,6 @@ public class ModelMapperUtils {
         return entityList.stream().map(entity -> map(entity, outClazz)).collect(Collectors.toList());
     }
 
-    public static <S, D> Set<D> mapAll(final Set<S> entityList, Class<D> outClazz) {
-        return entityList.stream().map(entity -> map(entity, outClazz)).collect(Collectors.toSet());
-    }
-
     public static <S, D> List<D> mapAll(final List<S> entityList, Class<D> outClazz) {
         return entityList.stream().map(entity -> map(entity, outClazz)).collect(Collectors.toList());
     }
@@ -42,9 +36,6 @@ public class ModelMapperUtils {
         return entityList.stream().map(entity -> map(entity, outClazz)).collect(Collectors.toList());
     }
 
-    public static <S, D> Page<D> mapAllPage(final Page<S> entityList, Class<D> outClazz) {
-        return new PageImpl<>(entityList.stream().map(entity -> map(entity, outClazz)).collect(Collectors.toList()));
-    }
 
     public static <S, D> D map(final S source, D destination) {
         modelMapper.map(source, destination);
