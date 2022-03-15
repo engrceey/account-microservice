@@ -1,5 +1,7 @@
 package com.reloadly.accountservice.entity;
 
+import com.reloadly.accountservice.constants.enums.AccountCurrency;
+import com.reloadly.accountservice.constants.enums.Role;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -25,6 +27,10 @@ public class User extends BaseEntity {
 
     @Column(name = "password", length = 200)
     private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    @Builder.Default
+    private Role role = Role.USER;
 
     @Column(name = "is_verified")
     @Builder.Default

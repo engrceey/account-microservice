@@ -26,10 +26,13 @@ public class DataLoader  {
     @PostConstruct
     @Order(1)
     private void init() {
+        log.info("Dataloader init- :: ");
         Optional<User> optionalUser1 = userRepository.getUserByEmail("test1-email@gmail.com");
         Optional<User> optionalUser2 = userRepository.getUserByEmail("test2-email@gmail.com");
 
         if (optionalUser1.isEmpty()) {
+
+            log.info("Loading data to the DB ----->>");
             UserRegistrationRequestDto requestDto = UserRegistrationRequestDto.builder()
                     .firstName("userfirstname")
                     .lastName("userlastname")
