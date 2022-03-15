@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 
 
 @Data
+@Builder
 @JsonIgnoreProperties(ignoreUnknown=true)
 @PasswordMatch(message = "validation.user.password.match")
 public class UserRegistrationRequestDto {
