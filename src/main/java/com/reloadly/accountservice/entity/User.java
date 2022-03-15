@@ -36,6 +36,6 @@ public class User extends BaseEntity {
     @Column(name = "locked")
     private Boolean isLocked = false;
 
-    @OneToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Account account;
 }

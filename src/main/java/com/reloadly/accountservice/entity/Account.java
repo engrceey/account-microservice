@@ -40,4 +40,8 @@ public class Account extends BaseEntity{
     @Column(name = "activated")
     private boolean isActivated = false;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }
