@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
         Account newAccount = new Account();
         long newAccountNumber = getNewAccountNumber();
         newAccount.setAccountNumber(newAccountNumber);
+        newAccount.setUser(newUser);
         accountRepository.save(newAccount);
 
         return new UserResponseDto(
@@ -52,6 +53,7 @@ public class UserServiceImpl implements UserService {
                 newAccountNumber,
                 userRegistrationRequestDto.getEmail(),
                 userRegistrationRequestDto.getPhoneNumber()
+
         );
     }
 
