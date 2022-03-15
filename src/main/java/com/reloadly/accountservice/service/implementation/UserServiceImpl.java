@@ -15,9 +15,16 @@ import com.reloadly.accountservice.utils.ModelMapperUtils;
 import org.apache.commons.lang3.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 
@@ -25,10 +32,11 @@ import java.util.UUID;
 @Service
 @Transactional
 @AllArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponseDto createUserAccount(UserRegistrationRequestDto userRegistrationRequestDto) {
@@ -39,6 +47,7 @@ public class UserServiceImpl implements UserService {
 
         User newUser = new User();
         ModelMapperUtils.map(userRegistrationRequestDto,newUser);
+        newUser.setPassword(passwordEncoder.encode(userRegistrationRequestDto.getPassword()));
         userRepository.save(newUser);
 
         Account newAccount = new Account();
@@ -91,5 +100,20 @@ public class UserServiceImpl implements UserService {
         while (doesAccountAlreadyExit(newAccountNumber)) newAccountNumber = AccountNumberUtil.generateAccountNumber();
         return newAccountNumber;
 
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.getUserByEmail(email)
+                .orElseThrow(
+                        () -> {throw new ResourceNotFoundException("user does not exist");
+                        }
+                );
+
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),authorities);
     }
 }
