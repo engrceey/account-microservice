@@ -8,10 +8,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @MappedSuperclass
 @Data

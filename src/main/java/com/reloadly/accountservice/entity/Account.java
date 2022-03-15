@@ -14,7 +14,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@Table(name = "accounts", uniqueConstraints= @UniqueConstraint(columnNames = "account_number"))
+@Table(name = "accounts",
+        indexes = @Index(name = "account_num_index", columnList = "account_number"),
+        uniqueConstraints= @UniqueConstraint(columnNames = "account_number")
+)
 public class Account extends BaseEntity{
 
     @Column(name = "account_number", length = 10)
@@ -40,8 +43,8 @@ public class Account extends BaseEntity{
     @Column(name = "activated")
     private boolean isActivated = false;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private User user;
 
 }
