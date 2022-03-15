@@ -17,13 +17,13 @@ import java.net.URI;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/user")
+@RequestMapping("user")
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping(path="/register")
-    public ResponseEntity<ApiResponse<UserResponseDto>> registerUser(@RequestBody @Valid UserRegistrationRequestDto registrationRequestDto) {
+    public ResponseEntity<ApiResponse<UserResponseDto>> registerUser(@RequestBody @Valid final UserRegistrationRequestDto registrationRequestDto) {
         log.info("controller register: register user :: [{}] ::", registrationRequestDto.getEmail());
         UserResponseDto response = userService.createUserAccount(registrationRequestDto);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/register").toUriString());
@@ -33,13 +33,13 @@ public class UserController {
                 .data(response)
                 .build()
         );
-
-
     }
 
     @PutMapping(path = "{id}")
-    public ResponseEntity<ApiResponse<Boolean>> updateUser(@RequestBody @Valid UpdateUserRequestDto updateUserRequestDto,
-                                                           @PathVariable("id") long id) {
+    public ResponseEntity<ApiResponse<Boolean>> updateUser(@RequestBody final UpdateUserRequestDto updateUserRequestDto,
+                                                           @PathVariable("id") final String id) {
+        log.info("controller update - updated user with id :: [{}]",id);
+
         userService.updateUser(updateUserRequestDto, id);
         return ResponseEntity.ok(ApiResponse.<Boolean>builder()
                 .isSuccessful(true)

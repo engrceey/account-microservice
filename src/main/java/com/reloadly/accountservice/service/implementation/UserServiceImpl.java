@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 
 @Slf4j
@@ -55,8 +56,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UpdateUserRequestDto updateUserDto, Long id) {
+    public void updateUser(UpdateUserRequestDto updateUserDto, String id) {
 
+        log.info("service updateUser - updating user with id :: [{}] ::", id);
        User user = userRepository.findById(id).<ResourceNotFoundException>orElseThrow(
                 () -> {throw new ResourceNotFoundException("user does not exist");
                 }
