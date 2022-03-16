@@ -7,6 +7,7 @@ import com.reloadly.accountservice.dto.response.UserResponseDto;
 import com.reloadly.accountservice.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,6 +46,19 @@ public class UserController {
                 .isSuccessful(true)
                 .statusMessage("user updated successfully")
                 .data(true)
+                .build()
+        );
+    }
+
+    @GetMapping(path = "verify-account/{token}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<String>> verifyAccount(@PathVariable String token) {
+        log.info("inside verifyAccount endpoint");
+        String response = userService.verifyAccount(token);
+
+        return ResponseEntity.ok().body(ApiResponse.<String>builder()
+                .statusMessage("account verified successfully")
+                .isSuccessful(true)
+                .data(response)
                 .build()
         );
     }
