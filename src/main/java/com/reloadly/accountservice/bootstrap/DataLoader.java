@@ -10,9 +10,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Optional;
 
 @Slf4j
@@ -26,7 +23,7 @@ public class DataLoader  {
     @PostConstruct
     @Order(1)
     private void init() {
-        log.info("Dataloader init- :: ");
+        log.info("DataLoader init- :: ");
         Optional<User> optionalUser1 = userRepository.getUserByEmail("test1-email@gmail.com");
         Optional<User> optionalUser2 = userRepository.getUserByEmail("test2-email@gmail.com");
 
