@@ -1,5 +1,6 @@
 package com.reloadly.accountservice.entity;
 
+import com.reloadly.accountservice.utils.AppUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,12 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "updated_date")
     private Timestamp updatedDate;
 
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
     @Version
     @Column(name = "version")
     private Long version;
@@ -44,11 +51,13 @@ public abstract class BaseEntity implements Serializable {
     @PrePersist
     protected void onCreate() {
         this.createdDate = new Timestamp(System.currentTimeMillis());
+        this.createdBy = AppUtil.getPrincipal();
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedDate = new Timestamp(System.currentTimeMillis());
+        this.updatedBy = AppUtil.getPrincipal();
     }
 
     @Override
