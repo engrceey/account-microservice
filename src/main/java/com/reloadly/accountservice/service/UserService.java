@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface UserService {
         UserResponseDto createUserAccount(UserRegistrationRequestDto userRegistrationRequestDto);
         void updateUser(UpdateUserRequestDto updateUserDto, String id);
+        String verifyAccount(String token);
 }
