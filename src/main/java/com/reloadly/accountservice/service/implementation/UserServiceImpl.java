@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .subject("Please Activate Your Account")
                     .body("Thank you for Creating your account with us " +
                             "please click on the link below to activate your account : " +
-                            "http://localhost:9091/api/v1/user/verify-account/" + token)
+                            "http://localhost:9091/api/v1/account/user/verify-account/" + token)
                     .recipient(newUser.getEmail())
                     .build());
         } catch (Exception exp) {

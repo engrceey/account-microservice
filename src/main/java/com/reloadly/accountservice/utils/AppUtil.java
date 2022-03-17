@@ -5,13 +5,26 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.reloadly.accountservice.entity.Account;
+import com.reloadly.accountservice.entity.User;
+import com.reloadly.accountservice.exceptions.ResourceNotFoundException;
+import com.reloadly.accountservice.repository.AccountRepository;
+import com.reloadly.accountservice.repository.UserRepository;
+import com.reloadly.accountservice.service.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+@Slf4j
+@RequiredArgsConstructor
 public class AppUtil {
+
+    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
 
     private static ObjectMapper mapper() {
         final ObjectMapper mapper = new ObjectMapper();
@@ -52,4 +65,6 @@ public class AppUtil {
         }
         return authentication.getName();
     }
+
+
 }

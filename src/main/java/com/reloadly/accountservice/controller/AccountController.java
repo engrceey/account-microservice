@@ -1,6 +1,7 @@
 package com.reloadly.accountservice.controller;
 
 
+import com.reloadly.accountservice.dto.request.ActivateAccountRequestDto;
 import com.reloadly.accountservice.dto.response.ApiResponse;
 import com.reloadly.accountservice.dto.response.FetchAccountResponseDto;
 import com.reloadly.accountservice.service.AccountService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("account")
+@RequestMapping("/")
 public class AccountController {
     private final AccountService accountService;
 
@@ -24,6 +25,20 @@ public class AccountController {
         return ResponseEntity.ok(ApiResponse.<FetchAccountResponseDto>builder()
                 .isSuccessful(true)
                 .statusMessage("account details")
+                .data(response)
+                .build()
+        );
+
+    }
+
+    @PostMapping("/pin")
+    public ResponseEntity<ApiResponse<Boolean>> setAccountPin(@RequestBody final ActivateAccountRequestDto activateAccountRequestDto) {
+        log.info("controller setAccountPin- account of ::" );
+
+        Boolean response = accountService.activateAccount(activateAccountRequestDto);
+        return ResponseEntity.ok(ApiResponse.<Boolean>builder()
+                .isSuccessful(true)
+                .statusMessage("account pin set")
                 .data(response)
                 .build()
         );

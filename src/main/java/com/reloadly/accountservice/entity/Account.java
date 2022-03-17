@@ -33,7 +33,7 @@ public class Account extends BaseEntity{
     private BigDecimal accountBalance = BigDecimal.valueOf(0.0);
 
     @Column(name = "account_pin", length = 4)
-    private Integer accountPin;
+    private String accountPin;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "account_currency")
