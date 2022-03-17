@@ -3,12 +3,27 @@ package com.reloadly.accountservice.dto.request;
 
 import lombok.Data;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Data
 public class TransferFundRequestDto {
-    private String receiver;
-    private long receiverAccountNumber;
+
+    @NotNull
+    private Long receiverAccountNumber;
+
+    @NotNull(message = "account cannot be empty")
+    @Min(value = 0)
     private BigDecimal amount;
+
+    @NotBlank(message = "sender cannot be blank")
+    private String sender;
+
+    @NotBlank(message = "receiver cannot be blank")
+    private String receiver;
+
 
 }

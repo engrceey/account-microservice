@@ -5,12 +5,13 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Data
 public  class DepositAccountRequestDto {
 
-    @NotNull(message = "account cannot be blank")
+    @NotNull(message = "account cannot be empty")
     @Min(value = 0)
     private BigDecimal amount;
 
@@ -20,7 +21,7 @@ public  class DepositAccountRequestDto {
     @NotBlank(message = "receiver cannot be blank")
     private String receiver;
 
-    @NotNull(message = "account number cannot be blank")
+    @NotNull
     private Long receiverAccountNumber;
 
 }

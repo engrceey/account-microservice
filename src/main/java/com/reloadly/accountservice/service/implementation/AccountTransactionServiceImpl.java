@@ -41,7 +41,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
         Account receiverAccount = getAccount(transferFundRequestDto.getReceiverAccountNumber());
 
         if (isAccountEligibleForTransfer(transferAccount.getAccountNumber(), transferFundRequestDto.getAmount())) {
-            BigDecimal newTransfererBalance = transferAccount.getAccountBalance().min(transferFundRequestDto.getAmount());
+            BigDecimal newTransfererBalance = transferAccount.getAccountBalance().subtract(transferFundRequestDto.getAmount());
             BigDecimal newReceiverBalance = receiverAccount.getAccountBalance().add(transferFundRequestDto.getAmount());
 
             transferAccount.setAccountBalance(newTransfererBalance);
@@ -62,7 +62,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
         Account withdrawAccount = getAccountLogIn();
 
         if(isAccountEligibleForTransfer(withdrawAccount.getAccountNumber(), withdrawFundRequestDto.getAmount())) {
-            BigDecimal newWithdrawAmount = withdrawAccount.getAccountBalance().min(withdrawFundRequestDto.getAmount());
+            BigDecimal newWithdrawAmount = withdrawAccount.getAccountBalance().subtract(withdrawFundRequestDto.getAmount());
             withdrawAccount.setAccountBalance(newWithdrawAmount);
             accountRepository.save(withdrawAccount);
 
@@ -76,7 +76,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     private boolean isAccountEligibleForTransfer(long account, BigDecimal amount) {
         FetchAccountResponseDto accountDetails = accountService.fetchAccount(account);
 
-        return accountDetails.getAccountBalance().compareTo(amount) > 0;
+        return accountDetails.getAccountBalance().compareTo(amount) >= 0;
     }
 
     private Account getAccount(long accountNumber) {
