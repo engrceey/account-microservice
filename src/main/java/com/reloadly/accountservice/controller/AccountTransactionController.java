@@ -5,7 +5,9 @@ import com.reloadly.accountservice.dto.request.DepositAccountRequestDto;
 import com.reloadly.accountservice.dto.request.TransferFundRequestDto;
 import com.reloadly.accountservice.dto.request.WithdrawFundRequestDto;
 import com.reloadly.accountservice.dto.response.ApiResponse;
+import com.reloadly.accountservice.dto.response.DepositResponseDto;
 import com.reloadly.accountservice.dto.response.TransferResponseDto;
+import com.reloadly.accountservice.dto.response.WithdrawFundResponseDto;
 import com.reloadly.accountservice.service.AccountTransactionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +28,10 @@ public class AccountTransactionController {
     private final AccountTransactionService accountTransactionService;
 
     @PostMapping("/deposit-fund")
-    public ResponseEntity<ApiResponse<Boolean>> depositFunds(@RequestBody @Valid final DepositAccountRequestDto depositAccountRequestDto) {
+    public ResponseEntity<ApiResponse<DepositResponseDto>> depositFunds(@RequestBody @Valid final DepositAccountRequestDto depositAccountRequestDto) {
         log.info("controller depositFunds- for :: [{}]", depositAccountRequestDto.getReceiverAccountNumber() );
-        boolean response = accountTransactionService.depositFunds(depositAccountRequestDto);
-        return ResponseEntity.ok(ApiResponse.<Boolean>builder()
+        DepositResponseDto response = accountTransactionService.depositFunds(depositAccountRequestDto);
+        return ResponseEntity.ok(ApiResponse.<DepositResponseDto>builder()
                 .isSuccessful(true)
                 .statusMessage("fund deposited successfully")
                 .data(response)
@@ -40,10 +42,10 @@ public class AccountTransactionController {
 
 
     @PostMapping("/withdraw-fund")
-    public ResponseEntity<ApiResponse<Boolean>> withdrawFunds(@RequestBody @Valid final WithdrawFundRequestDto withdrawFundRequestDto) {
+    public ResponseEntity<ApiResponse<WithdrawFundResponseDto>> withdrawFunds(@RequestBody @Valid final WithdrawFundRequestDto withdrawFundRequestDto) {
         log.info("controller withdrawFunds- for :: [{}]", withdrawFundRequestDto.getAmount() );
-        boolean response = accountTransactionService.withdrawFunds(withdrawFundRequestDto);
-        return ResponseEntity.ok(ApiResponse.<Boolean>builder()
+        WithdrawFundResponseDto response = accountTransactionService.withdrawFunds(withdrawFundRequestDto);
+        return ResponseEntity.ok(ApiResponse.<WithdrawFundResponseDto>builder()
                 .isSuccessful(true)
                 .statusMessage("fund withdraw successfully")
                 .data(response)

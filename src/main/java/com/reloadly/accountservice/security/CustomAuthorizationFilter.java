@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.reloadly.accountservice.constants.SecurityConstants;
 import com.reloadly.accountservice.exceptions.CustomException;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,8 +29,9 @@ import com.auth0.jwt.JWT;
 
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+    @SneakyThrows
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, CustomException {
         if (request.getServletPath().equals("/api/v1/login") ) {
             filterChain.doFilter(request, response);
         } else {
@@ -56,7 +58,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     log.error("Error occurred {}", exception.getMessage());
                     response.setHeader("error", exception.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
-                    throw new CustomException("Forbidden you don't have access", FORBIDDEN);
+                    throw new Exception(exception.getMessage());
                 }
 
             } else {

@@ -5,10 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TransferResponseDto {
+public class DepositResponseDto {
     private String statusCode;
-    private String senderName;
-    private long sendAccountNumber;
+    private long depositAccountNumber;
     private String receiverName;
     private boolean isTransactionSuccessful;
 }
