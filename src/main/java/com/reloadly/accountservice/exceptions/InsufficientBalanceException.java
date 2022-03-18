@@ -1,5 +1,6 @@
 package com.reloadly.accountservice.exceptions;
 
+import com.reloadly.accountservice.constants.AppConstant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 public class InsufficientBalanceException extends RuntimeException{
     protected String message;
     protected HttpStatus status;
+    protected final String statusCode = AppConstant.Status.INSUFFICIENT_FUNDS.getCode();
 
 
     public InsufficientBalanceException(String message) {

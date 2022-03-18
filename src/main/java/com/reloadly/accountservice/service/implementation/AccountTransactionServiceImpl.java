@@ -1,9 +1,11 @@
 package com.reloadly.accountservice.service.implementation;
 
+import com.reloadly.accountservice.constants.AppConstant;
 import com.reloadly.accountservice.dto.request.DepositAccountRequestDto;
 import com.reloadly.accountservice.dto.request.TransferFundRequestDto;
 import com.reloadly.accountservice.dto.request.WithdrawFundRequestDto;
 import com.reloadly.accountservice.dto.response.FetchAccountResponseDto;
+import com.reloadly.accountservice.dto.response.TransferResponseDto;
 import com.reloadly.accountservice.entity.Account;
 import com.reloadly.accountservice.exceptions.InsufficientBalanceException;
 import com.reloadly.accountservice.exceptions.ResourceNotFoundException;
@@ -15,10 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AccountTransactionServiceImpl implements AccountTransactionService {
 
@@ -37,8 +41,8 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     }
 
     @Override
-    public boolean transferFunds(TransferFundRequestDto transferFundRequestDto) {
-
+    public TransferResponseDto transferFunds(TransferFundRequestDto transferFundRequestDto) {
+        log.info("Transaction service transferFunds");
         Account transferAccount = getAccountLogIn();
         Account receiverAccount = getAccount(transferFundRequestDto.getReceiverAccountNumber());
 
@@ -52,7 +56,15 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
             receiverAccount.setAccountBalance(newReceiverBalance);
             accountRepository.save(receiverAccount);
 
-            return true;
+            log.info("finished transfer, sending response");
+            return TransferResponseDto
+                    .builder()
+                    .sendAccountNumber(transferAccount.getAccountNumber())
+                    .isTransactionSuccessful(true)
+                    .receiverName(receiverAccount.getUser().getFirstName())
+                    .senderName(transferAccount.getUser().getFirstName())
+                    .statusCode(AppConstant.Status.SUCCESSFUL.getCode())
+                    .build();
 
         }
         throw new InsufficientBalanceException("Insufficient balance to complete this transaction", HttpStatus.BAD_REQUEST);
@@ -60,14 +72,14 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
 
     @Override
     public boolean withdrawFunds(WithdrawFundRequestDto withdrawFundRequestDto) {
-
+        log.info("Account Transaction service ");
         Account withdrawAccount = getAccountLogIn();
 
         if(isAccountEligibleForTransfer(withdrawAccount.getAccountNumber(), withdrawFundRequestDto.getAmount())) {
             BigDecimal newWithdrawAmount = withdrawAccount.getAccountBalance().subtract(withdrawFundRequestDto.getAmount());
             withdrawAccount.setAccountBalance(newWithdrawAmount);
             accountRepository.save(withdrawAccount);
-
+            log.info("finished withdraw for :: [{}]", withdrawAccount.getAccountNumber());
             return true;
         }
         throw new InsufficientBalanceException("Insufficient balance to complete this transaction", HttpStatus.BAD_REQUEST);

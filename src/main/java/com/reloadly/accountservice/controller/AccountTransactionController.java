@@ -5,6 +5,7 @@ import com.reloadly.accountservice.dto.request.DepositAccountRequestDto;
 import com.reloadly.accountservice.dto.request.TransferFundRequestDto;
 import com.reloadly.accountservice.dto.request.WithdrawFundRequestDto;
 import com.reloadly.accountservice.dto.response.ApiResponse;
+import com.reloadly.accountservice.dto.response.TransferResponseDto;
 import com.reloadly.accountservice.service.AccountTransactionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,10 +53,10 @@ public class AccountTransactionController {
     }
 
     @PostMapping("/transfer-fund")
-    public ResponseEntity<ApiResponse<Boolean>> transferFunds(@RequestBody @Valid final TransferFundRequestDto transferFundRequestDto) {
+    public ResponseEntity<ApiResponse<TransferResponseDto>> transferFunds(@RequestBody @Valid final TransferFundRequestDto transferFundRequestDto) {
         log.info("controller transferFunds- for :: [{}]", transferFundRequestDto.getReceiverAccountNumber() );
-        boolean response = accountTransactionService.transferFunds(transferFundRequestDto);
-        return ResponseEntity.ok(ApiResponse.<Boolean>builder()
+        TransferResponseDto response = accountTransactionService.transferFunds(transferFundRequestDto);
+        return ResponseEntity.ok(ApiResponse.<TransferResponseDto>builder()
                 .isSuccessful(true)
                 .statusMessage("fund transferred successfully")
                 .data(response)
