@@ -5,12 +5,14 @@ import com.reloadly.accountservice.dto.request.TransferFundRequestDto;
 import com.reloadly.accountservice.dto.request.WithdrawFundRequestDto;
 import com.reloadly.accountservice.dto.response.FetchAccountResponseDto;
 import com.reloadly.accountservice.entity.Account;
+import com.reloadly.accountservice.exceptions.InsufficientBalanceException;
 import com.reloadly.accountservice.exceptions.ResourceNotFoundException;
 import com.reloadly.accountservice.repository.AccountRepository;
 import com.reloadly.accountservice.service.AccountService;
 import com.reloadly.accountservice.service.AccountTransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -53,7 +55,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
             return true;
 
         }
-        return false;
+        throw new InsufficientBalanceException("Insufficient balance to complete this transaction", HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -68,8 +70,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
 
             return true;
         }
-
-        return false;
+        throw new InsufficientBalanceException("Insufficient balance to complete this transaction", HttpStatus.BAD_REQUEST);
     }
 
 
