@@ -62,13 +62,8 @@ public class AccountServiceImpl implements AccountService {
 
     public Account getLoggedInUserAccountDetails() {
         log.info("AccountServiceImpl getLoggedInUserAccountDetails- :: ");
-
         String loggedInUser = AppUtil.getPrincipal();
-
         log.info("AccountServiceImpl getLoggedInUserAccountDetails- logged In user :: [{}]", loggedInUser);
-
-
-
         User user =  userRepository.getUserByEmail(loggedInUser).orElseThrow(
                 () -> {throw new ResourceNotFoundException("user not found");
                 }

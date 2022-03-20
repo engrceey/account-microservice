@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @AllArgsConstructor
@@ -31,8 +33,8 @@ public class AccountController {
 
     }
 
-    @PostMapping("/pin")
-    public ResponseEntity<ApiResponse<Boolean>> setAccountPin(@RequestBody final ActivateAccountRequestDto activateAccountRequestDto) {
+    @PutMapping("/pin")
+    public ResponseEntity<ApiResponse<Boolean>> setAccountPin(@RequestBody @Valid final ActivateAccountRequestDto activateAccountRequestDto) {
         log.info("controller setAccountPin- account of ::" );
 
         Boolean response = accountService.activateAccount(activateAccountRequestDto);

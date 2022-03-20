@@ -37,7 +37,6 @@ public class AccountTransactionController {
                 .data(response)
                 .build()
         );
-
     }
 
 
@@ -51,7 +50,6 @@ public class AccountTransactionController {
                 .data(response)
                 .build()
         );
-
     }
 
     @PostMapping("/transfer-fund")
@@ -64,7 +62,6 @@ public class AccountTransactionController {
                 .data(response)
                 .build()
         );
-
     }
 
 }

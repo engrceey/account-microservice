@@ -18,8 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 @Slf4j
@@ -57,10 +57,10 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
         Account receiverAccount = getAccount(transferFundRequestDto.getReceiverAccountNumber());
 
         if (isAccountEligibleForTransfer(transferAccount.getAccountNumber(), transferFundRequestDto.getAmount())) {
-            BigDecimal newTransfererBalance = transferAccount.getAccountBalance().subtract(transferFundRequestDto.getAmount());
+            BigDecimal newTransferredBalance = transferAccount.getAccountBalance().subtract(transferFundRequestDto.getAmount());
             BigDecimal newReceiverBalance = receiverAccount.getAccountBalance().add(transferFundRequestDto.getAmount());
 
-            transferAccount.setAccountBalance(newTransfererBalance);
+            transferAccount.setAccountBalance(newTransferredBalance);
             accountRepository.save(transferAccount);
 
             receiverAccount.setAccountBalance(newReceiverBalance);
@@ -75,7 +75,6 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
                     .senderName(transferAccount.getUser().getFirstName())
                     .statusCode(AppConstant.Status.SUCCESSFUL.getCode())
                     .build();
-
         }
         throw new InsufficientBalanceException("Insufficient balance to complete this transaction", HttpStatus.BAD_REQUEST);
     }
@@ -120,6 +119,5 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
        return accountRepository.
                 getAccountByAccountNumber(accountService.getLoggedInUserAccountDetails().getAccountNumber()).get();
     }
-
 
 }
