@@ -28,7 +28,7 @@ Transfer funds : http://localhost:9091/api/v1/account/transaction/transfer-fund 
 
 Deposit funds : http://localhost:9091/api/v1/account/transaction/deposit-fund       [POST]
 
-Withdraw funds : http://localhost:9092/api/v1/transaction/withdraw-funds        [POST]
+Withdraw funds : http://localhost:9091/api/v1/account/transaction/withdraw-fund    [POST]
 
 ### H2 Database
 H2 database url : http://localhost:9091/api/v1/account/h2-console/
